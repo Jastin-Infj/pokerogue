@@ -3533,6 +3533,11 @@ export const pokemonSpeciesLevelMoves: PokemonSpeciesLevelMoves = {
   ],
   [Species.UNOWN]: [
     [ 1, Moves.HIDDEN_POWER ],
+    [ 1, Moves.POWER_SWAP ],
+    [ 1, Moves.GUARD_SWAP ],
+    [ 1, Moves.SPEED_SWAP ],
+    [ 25, Moves.SKILL_SWAP ],
+    [ 50, Moves.TERA_BLAST ],
   ],
   [Species.WOBBUFFET]: [
     [ EVOLVE_MOVE, Moves.COUNTER ],

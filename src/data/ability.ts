@@ -5444,7 +5444,8 @@ export function initAbilities() {
       .attr(PostDefendContactApplyStatusEffectAbAttr, 30, StatusEffect.BURN)
       .bypassFaint(),
     new Ability(Abilities.RUN_AWAY, 3)
-      .attr(RunSuccessAbAttr),
+      .attr(RunSuccessAbAttr)
+      .attr(PostDefendHpGatedStatStageChangeAbAttr, (target, user, move) => move.category !== MoveCategory.STATUS, 0.5, [ Stat.SPD ], 3),
     new Ability(Abilities.KEEN_EYE, 3)
       .attr(ProtectStatAbAttr, Stat.ACC)
       .ignorable(),
@@ -6346,6 +6347,16 @@ export function initAbilities() {
     new Ability(Abilities.POISON_PUPPETEER, 9)
       .attr(UncopiableAbilityAbAttr)
       .attr(UnswappableAbilityAbAttr)
-      .attr(ConfusionOnStatusEffectAbAttr, StatusEffect.POISON, StatusEffect.TOXIC)
+      .attr(ConfusionOnStatusEffectAbAttr, StatusEffect.POISON, StatusEffect.TOXIC),
+    // Add
+    new Ability(Abilities.LOVERS_TIDE, 0)
+      .attr(AlliedFieldDamageReductionAbAttr, 0.5),
+    new Ability(Abilities.PIERCING_STRIKE, 0)
+      .attr(PostSummonStatStageChangeAbAttr, [ Stat.ATK ], -1, false, true)
+      .attr(BonusCritAbAttr),
+    new Ability(Abilities.RONE_OF_POWER, 0)
+      .attr(AllyMoveCategoryPowerBoostAbAttr, [ MoveCategory.SPECIAL, MoveCategory.PHYSICAL ], 2.5)
+      .attr(MovePowerBoostAbAttr, (user, target, move) => true, 2.5)
+      .attr(PostSummonStatStageChangeAbAttr, [ Stat.ATK, Stat.DEF, Stat.SPATK, Stat.SPDEF ], 1, true),
   );
 }
