@@ -5280,6 +5280,7 @@ function getPokemonWithWeatherBasedForms() {
 
 export const allAbilities = [ new Ability(Abilities.NONE, 3) ];
 
+// #region init
 export function initAbilities() {
   allAbilities.push(
     new Ability(Abilities.STENCH, 3)
@@ -6348,7 +6349,7 @@ export function initAbilities() {
       .attr(UncopiableAbilityAbAttr)
       .attr(UnswappableAbilityAbAttr)
       .attr(ConfusionOnStatusEffectAbAttr, StatusEffect.POISON, StatusEffect.TOXIC),
-    // Add
+    // #region Add
     new Ability(Abilities.LOVERS_TIDE, 0)
       .attr(AlliedFieldDamageReductionAbAttr, 0.5),
     new Ability(Abilities.PIERCING_STRIKE, 0)
