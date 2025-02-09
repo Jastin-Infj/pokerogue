@@ -8340,7 +8340,7 @@ export function initMoves() {
       .condition(failOnGravityCondition),
     new AttackMove(Moves.BIND, Type.NORMAL, MoveCategory.PHYSICAL, 15, 85, 20, -1, 0, 1)
       .attr(TrapAttr, BattlerTagType.BIND),
-    new AttackMove(Moves.SLAM, Type.NORMAL, MoveCategory.PHYSICAL, 80, 75, 20, -1, 0, 1),
+    new AttackMove(Moves.SLAM, Type.NORMAL, MoveCategory.PHYSICAL, 110, 85, 15, -1, 0, 1),
     new AttackMove(Moves.VINE_WHIP, Type.GRASS, MoveCategory.PHYSICAL, 45, 100, 25, -1, 0, 1),
     new AttackMove(Moves.STOMP, Type.NORMAL, MoveCategory.PHYSICAL, 65, 100, 20, 30, 0, 1)
       .attr(AlwaysHitMinimizeAttr)
@@ -8414,7 +8414,7 @@ export function initMoves() {
     new StatusMove(Moves.SING, Type.NORMAL, 55, 15, -1, 0, 1)
       .attr(StatusEffectAttr, StatusEffect.SLEEP)
       .soundBased(),
-    new StatusMove(Moves.SUPERSONIC, Type.NORMAL, 55, 20, -1, 0, 1)
+    new StatusMove(Moves.SUPERSONIC, Type.NORMAL, 100, 20, -1, 0, 1)
       .attr(ConfuseAttr)
       .soundBased(),
     new AttackMove(Moves.SONIC_BOOM, Type.NORMAL, MoveCategory.SPECIAL, -1, 90, 20, -1, 0, 1)
@@ -8791,7 +8791,7 @@ export function initMoves() {
     new StatusMove(Moves.SCARY_FACE, Type.NORMAL, 100, 10, -1, 0, 2)
       .attr(StatStageChangeAttr, [ Stat.SPD ], -2),
     new AttackMove(Moves.FEINT_ATTACK, Type.DARK, MoveCategory.PHYSICAL, 60, -1, 20, -1, 0, 2),
-    new StatusMove(Moves.SWEET_KISS, Type.FAIRY, 75, 10, -1, 0, 2)
+    new StatusMove(Moves.SWEET_KISS, Type.FAIRY, -1, 10, -1, 0, 2)
       .attr(ConfuseAttr),
     new SelfStatusMove(Moves.BELLY_DRUM, Type.NORMAL, -1, 10, -1, 0, 2)
       .attr(CutHpStatStageBoostAttr, [ Stat.ATK ], 12, 2, (user) => {

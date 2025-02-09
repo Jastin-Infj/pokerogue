@@ -144,7 +144,7 @@ export const speciesStarterCosts = {
   [Species.SWINUB]: 3,
   [Species.CORSOLA]: 2,
   [Species.REMORAID]: 2,
-  [Species.DELIBIRD]: 2,
+  [Species.DELIBIRD]: 4,
   [Species.SKARMORY]: 4,
   [Species.HOUNDOUR]: 3,
   [Species.PHANPY]: 3,

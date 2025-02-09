@@ -2702,6 +2702,7 @@ export const pokemonSpeciesLevelMoves: PokemonSpeciesLevelMoves = {
     [ 1, Moves.RAZOR_LEAF ],
     [ 1, Moves.POISON_POWDER ],
     [ 1, Moves.PETAL_BLIZZARD ],
+    [ 1, Moves.AROMATIC_MIST ],
     [ 12, Moves.SYNTHESIS ],
     [ 18, Moves.REFLECT ],
     [ 22, Moves.MAGICAL_LEAF ],
@@ -2712,6 +2713,7 @@ export const pokemonSpeciesLevelMoves: PokemonSpeciesLevelMoves = {
     [ 54, Moves.SAFEGUARD ],
     [ 60, Moves.GIGA_DRAIN ],
     [ 65, Moves.SOLAR_BEAM ],
+    [ 86, Moves.COTTON_GUARD ],
   ],
   [Species.CYNDAQUIL]: [
     [ 1, Moves.TACKLE ],
