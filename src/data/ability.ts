@@ -4753,6 +4753,10 @@ export class TerrainEventTypeChangeAbAttr extends PostSummonAbAttr {
         pokemon.summonData.addedType = null;
       }
       pokemon.summonData.types = typeChange;
+      // #region Add
+      pokemon.stats = [ Stat.DEF, Stat.SPDEF ];
+      globalScene.unshiftPhase(new StatStageChangePhase(pokemon.getBattlerIndex(), false, pokemon.stats, 1));
+
       pokemon.updateInfo();
     }
     return true;
@@ -5284,7 +5288,7 @@ export const allAbilities = [ new Ability(Abilities.NONE, 3) ];
 export function initAbilities() {
   allAbilities.push(
     new Ability(Abilities.STENCH, 3)
-      .attr(PostAttackApplyBattlerTagAbAttr, false, (user, target, move) => !move.hasAttr(FlinchAttr) && !move.hitsSubstitute(user, target) ? 10 : 0, BattlerTagType.FLINCHED),
+      .attr(PostAttackApplyBattlerTagAbAttr, false, (user, target, move) => !move.hasAttr(FlinchAttr) && !move.hitsSubstitute(user, target) ? 30 : 0, BattlerTagType.FLINCHED),
     new Ability(Abilities.DRIZZLE, 3)
       .attr(PostSummonWeatherChangeAbAttr, WeatherType.RAIN)
       .attr(PostBiomeChangeWeatherChangeAbAttr, WeatherType.RAIN),
@@ -5449,6 +5453,7 @@ export function initAbilities() {
       .attr(PostDefendHpGatedStatStageChangeAbAttr, (target, user, move) => move.category !== MoveCategory.STATUS, 0.5, [ Stat.SPD ], 3),
     new Ability(Abilities.KEEN_EYE, 3)
       .attr(ProtectStatAbAttr, Stat.ACC)
+      .attr(StatMultiplierAbAttr, Stat.ACC, 1.1)
       .ignorable(),
     new Ability(Abilities.HYPER_CUTTER, 3)
       .attr(ProtectStatAbAttr, Stat.ATK)
@@ -5469,6 +5474,8 @@ export function initAbilities() {
     new Ability(Abilities.FORECAST, 3)
       .attr(UncopiableAbilityAbAttr)
       .attr(NoFusionAbilityAbAttr)
+      .attr(MovePowerBoostAbAttr, (user, target, move) => move.hasFlag(MoveFlags.WEATHER_MOVE), 1.5)
+      .attr()
       .attr(PostSummonFormChangeByWeatherAbAttr, Abilities.FORECAST)
       .attr(PostWeatherChangeFormChangeAbAttr, Abilities.FORECAST, [ WeatherType.NONE, WeatherType.SANDSTORM, WeatherType.STRONG_WINDS, WeatherType.FOG ]),
     new Ability(Abilities.STICKY_HOLD, 3)
@@ -5526,6 +5533,8 @@ export function initAbilities() {
       .bypassFaint(),
     new Ability(Abilities.TANGLED_FEET, 4)
       .conditionalAttr(pokemon => !!pokemon.getTag(BattlerTagType.CONFUSED), StatMultiplierAbAttr, Stat.EVA, 2)
+      .conditionalAttr(pokemon => !!pokemon.getTag(BattlerTagType.CONFUSED), StatMultiplierAbAttr, Stat.ATK, 1.5)
+      .conditionalAttr(pokemon => !!pokemon.getTag(BattlerTagType.CONFUSED), StatMultiplierAbAttr, Stat.SPD, 1.5)
       .ignorable(),
     new Ability(Abilities.MOTOR_DRIVE, 4)
       .attr(TypeImmunityStatStageChangeAbAttr, Type.ELECTRIC, Stat.SPD, 1)
@@ -5534,7 +5543,8 @@ export function initAbilities() {
       .attr(MovePowerBoostAbAttr, (user, target, move) => user?.gender !== Gender.GENDERLESS && target?.gender !== Gender.GENDERLESS && user?.gender === target?.gender, 1.25, true)
       .attr(MovePowerBoostAbAttr, (user, target, move) => user?.gender !== Gender.GENDERLESS && target?.gender !== Gender.GENDERLESS && user?.gender !== target?.gender, 0.75),
     new Ability(Abilities.STEADFAST, 4)
-      .attr(FlinchStatStageChangeAbAttr, [ Stat.SPD ], 1),
+      .attr(FlinchStatStageChangeAbAttr, [ Stat.ATK, Stat.SPATK, Stat.SPD ], 1)
+      .attr(IntimidateImmunityAbAttr),
     new Ability(Abilities.SNOW_CLOAK, 4)
       .attr(StatMultiplierAbAttr, Stat.EVA, 1.2)
       .attr(BlockWeatherDamageAttr, WeatherType.HAIL)
@@ -5618,7 +5628,8 @@ export function initAbilities() {
     new Ability(Abilities.ANTICIPATION, 4)
       .conditionalAttr(getAnticipationCondition(), PostSummonMessageAbAttr, (pokemon: Pokemon) => i18next.t("abilityTriggers:postSummonAnticipation", { pokemonNameWithAffix: getPokemonNameWithAffix(pokemon) })),
     new Ability(Abilities.FOREWARN, 4)
-      .attr(ForewarnAbAttr),
+      .attr(ForewarnAbAttr)
+      .attr(StatMultiplierAbAttr, Stat.EVA, 1.5),
     new Ability(Abilities.UNAWARE, 4)
       .attr(IgnoreOpponentStatStagesAbAttr, [ Stat.ATK, Stat.DEF, Stat.SPATK, Stat.SPDEF, Stat.ACC, Stat.EVA ])
       .ignorable(),
@@ -5697,9 +5708,11 @@ export function initAbilities() {
       .attr(PostDefendStatStageChangeAbAttr, (target, user, move) => move.category === MoveCategory.PHYSICAL, Stat.SPD, 2),
     new Ability(Abilities.HEAVY_METAL, 5)
       .attr(WeightMultiplierAbAttr, 2)
+      .attr(StatMultiplierAbAttr, Stat.SPD, 0.75)
       .ignorable(),
     new Ability(Abilities.LIGHT_METAL, 5)
       .attr(WeightMultiplierAbAttr, 0.5)
+      .attr(StatMultiplierAbAttr, Stat.SPD, 1.25)
       .ignorable(),
     new Ability(Abilities.MULTISCALE, 5)
       .attr(ReceivedMoveDamageMultiplierAbAttr, (target, user, move) => target.isFullHp(), 0.5)
@@ -5731,6 +5744,7 @@ export function initAbilities() {
       .attr(PreSwitchOutHealAbAttr),
     new Ability(Abilities.BIG_PECKS, 5)
       .attr(ProtectStatAbAttr, Stat.DEF)
+      .attr(ProtectStatAbAttr, Stat.SPDEF)
       .ignorable(),
     new Ability(Abilities.SAND_RUSH, 5)
       .attr(StatMultiplierAbAttr, Stat.SPD, 2)
@@ -5795,7 +5809,7 @@ export function initAbilities() {
       .attr(NoFusionAbilityAbAttr)
       .bypassFaint(),
     new Ability(Abilities.VICTORY_STAR, 5)
-      .attr(StatMultiplierAbAttr, Stat.ACC, 1.1)
+      .attr(StatMultiplierAbAttr, Stat.ACC, 1.3)
       .partial(), // Does not boost ally's accuracy
     new Ability(Abilities.TURBOBLAZE, 5)
       .attr(PostSummonMessageAbAttr, (pokemon: Pokemon) => i18next.t("abilityTriggers:postSummonTurboblaze", { pokemonNameWithAffix: getPokemonNameWithAffix(pokemon) }))

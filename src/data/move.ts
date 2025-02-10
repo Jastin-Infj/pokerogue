@@ -126,6 +126,8 @@ export enum MoveFlags {
   IGNORE_SUBSTITUTE = 1 << 17,
   /** Indicates a move is able to be redirected to allies in a double battle if the attacker faints */
   REDIRECT_COUNTER = 1 << 18,
+  // #region Add
+  WEATHER_MOVE     = 1 << 19,
 }
 
 type MoveConditionFunc = (user: Pokemon, target: Pokemon, move: Move) => boolean;
@@ -567,6 +569,16 @@ export default class Move implements Localizable {
    */
   triageMove(): this {
     this.setFlag(MoveFlags.TRIAGE_MOVE, true);
+    return this;
+  }
+
+  /**
+   * Sets the {@linkcode MoveFlags.WEATHER_MOVE} flag for the calling Move
+   * @see {@linkcode Moves.Gust}
+   * @returns The {@linkcode Move} that called this function
+   */
+  weatherMove(): this {
+    this.setFlag(MoveFlags.WEATHER_MOVE, true);
     return this;
   }
 
@@ -8432,7 +8444,8 @@ export function initMoves() {
       .attr(StatusEffectAttr, StatusEffect.BURN),
     new StatusMove(Moves.MIST, Type.ICE, -1, 30, -1, 0, 1)
       .attr(AddArenaTagAttr, ArenaTagType.MIST, 5, true)
-      .target(MoveTarget.USER_SIDE),
+      .target(MoveTarget.USER_SIDE)
+      .weatherMove(),
     new AttackMove(Moves.WATER_GUN, Type.WATER, MoveCategory.SPECIAL, 40, 100, 25, -1, 0, 1),
     new AttackMove(Moves.HYDRO_PUMP, Type.WATER, MoveCategory.SPECIAL, 110, 80, 5, -1, 0, 1),
     new AttackMove(Moves.SURF, Type.WATER, MoveCategory.SPECIAL, 90, 100, 15, -1, 0, 1)
@@ -8445,7 +8458,8 @@ export function initMoves() {
       .attr(BlizzardAccuracyAttr)
       .attr(StatusEffectAttr, StatusEffect.FREEZE)
       .windMove()
-      .target(MoveTarget.ALL_NEAR_ENEMIES),
+      .target(MoveTarget.ALL_NEAR_ENEMIES)
+      .weatherMove(),
     new AttackMove(Moves.PSYBEAM, Type.PSYCHIC, MoveCategory.SPECIAL, 65, 100, 20, 10, 0, 1)
       .attr(ConfuseAttr),
     new AttackMove(Moves.BUBBLE_BEAM, Type.WATER, MoveCategory.SPECIAL, 65, 100, 20, 10, 0, 1)
@@ -8520,7 +8534,8 @@ export function initMoves() {
     new AttackMove(Moves.THUNDER, Type.ELECTRIC, MoveCategory.SPECIAL, 110, 70, 10, 30, 0, 1)
       .attr(StatusEffectAttr, StatusEffect.PARALYSIS)
       .attr(ThunderAccuracyAttr)
-      .attr(HitsTagAttr, BattlerTagType.FLYING),
+      .attr(HitsTagAttr, BattlerTagType.FLYING)
+      .weatherMove(),
     new AttackMove(Moves.ROCK_THROW, Type.ROCK, MoveCategory.PHYSICAL, 50, 90, 15, -1, 0, 1)
       .makesContact(false),
     new AttackMove(Moves.EARTHQUAKE, Type.GROUND, MoveCategory.PHYSICAL, 100, 100, 10, -1, 0, 1)
@@ -8588,7 +8603,8 @@ export function initMoves() {
       .target(MoveTarget.USER_SIDE),
     new SelfStatusMove(Moves.HAZE, Type.ICE, -1, 30, -1, 0, 1)
       .ignoresSubstitute()
-      .attr(ResetStatsAttr, true),
+      .attr(ResetStatsAttr, true)
+      .weatherMove(),
     new StatusMove(Moves.REFLECT, Type.PSYCHIC, -1, 20, -1, 0, 1)
       .attr(AddArenaTagAttr, ArenaTagType.REFLECT, 5, true)
       .target(MoveTarget.USER_SIDE),
@@ -8612,7 +8628,8 @@ export function initMoves() {
     new AttackMove(Moves.LICK, Type.GHOST, MoveCategory.PHYSICAL, 30, 100, 30, 30, 0, 1)
       .attr(StatusEffectAttr, StatusEffect.PARALYSIS),
     new AttackMove(Moves.SMOG, Type.POISON, MoveCategory.SPECIAL, 30, 70, 20, 40, 0, 1)
-      .attr(StatusEffectAttr, StatusEffect.POISON),
+      .attr(StatusEffectAttr, StatusEffect.POISON)
+      .weatherMove(),
     new AttackMove(Moves.SLUDGE, Type.POISON, MoveCategory.SPECIAL, 65, 100, 20, 30, 0, 1)
       .attr(StatusEffectAttr, StatusEffect.POISON),
     new AttackMove(Moves.BONE_CLUB, Type.GROUND, MoveCategory.PHYSICAL, 65, 85, 20, 10, 0, 1)
@@ -8654,7 +8671,8 @@ export function initMoves() {
       .triageMove(),
     new StatusMove(Moves.POISON_GAS, Type.POISON, 90, 40, -1, 0, 1)
       .attr(StatusEffectAttr, StatusEffect.POISON)
-      .target(MoveTarget.ALL_NEAR_ENEMIES),
+      .target(MoveTarget.ALL_NEAR_ENEMIES)
+      .weatherMove(),
     new AttackMove(Moves.BARRAGE, Type.NORMAL, MoveCategory.PHYSICAL, 15, 85, 20, -1, 0, 1)
       .attr(MultiHitAttr)
       .makesContact(false)
@@ -8782,7 +8800,8 @@ export function initMoves() {
       .attr(ReducePpMoveAttr, 4),
     new AttackMove(Moves.POWDER_SNOW, Type.ICE, MoveCategory.SPECIAL, 40, 100, 25, 10, 0, 2)
       .attr(StatusEffectAttr, StatusEffect.FREEZE)
-      .target(MoveTarget.ALL_NEAR_ENEMIES),
+      .target(MoveTarget.ALL_NEAR_ENEMIES)
+      .weatherMove(),
     new SelfStatusMove(Moves.PROTECT, Type.NORMAL, -1, 10, -1, 4, 2)
       .attr(ProtectAttr)
       .condition(failIfLastCondition),
@@ -8851,7 +8870,8 @@ export function initMoves() {
       .target(MoveTarget.RANDOM_NEAR_ENEMY),
     new StatusMove(Moves.SANDSTORM, Type.ROCK, -1, 10, -1, 0, 2)
       .attr(WeatherChangeAttr, WeatherType.SANDSTORM)
-      .target(MoveTarget.BOTH_SIDES),
+      .target(MoveTarget.BOTH_SIDES)
+      .weatherMove(),
     new AttackMove(Moves.GIGA_DRAIN, Type.GRASS, MoveCategory.SPECIAL, 75, 100, 10, -1, 0, 2)
       .attr(HitHealAttr)
       .triageMove(),
@@ -8975,13 +8995,16 @@ export function initMoves() {
       .attr(HitsTagForDoubleDamageAttr, BattlerTagType.FLYING)
       .attr(FlinchAttr)
       .windMove()
-      .target(MoveTarget.ALL_NEAR_ENEMIES),
+      .target(MoveTarget.ALL_NEAR_ENEMIES)
+      .weatherMove(),
     new StatusMove(Moves.RAIN_DANCE, Type.WATER, -1, 5, -1, 0, 2)
       .attr(WeatherChangeAttr, WeatherType.RAIN)
-      .target(MoveTarget.BOTH_SIDES),
+      .target(MoveTarget.BOTH_SIDES)
+      .weatherMove(),
     new StatusMove(Moves.SUNNY_DAY, Type.FIRE, -1, 5, -1, 0, 2)
       .attr(WeatherChangeAttr, WeatherType.SUNNY)
-      .target(MoveTarget.BOTH_SIDES),
+      .target(MoveTarget.BOTH_SIDES)
+      .weatherMove(),
     new AttackMove(Moves.CRUNCH, Type.DARK, MoveCategory.PHYSICAL, 80, 100, 15, 20, 0, 2)
       .attr(StatStageChangeAttr, [ Stat.DEF ], -1)
       .bitingMove(),
@@ -9036,7 +9059,8 @@ export function initMoves() {
       .target(MoveTarget.ALL_NEAR_ENEMIES),
     new StatusMove(Moves.HAIL, Type.ICE, -1, 10, -1, 0, 3)
       .attr(WeatherChangeAttr, WeatherType.HAIL)
-      .target(MoveTarget.BOTH_SIDES),
+      .target(MoveTarget.BOTH_SIDES)
+      .weatherMove(),
     new StatusMove(Moves.TORMENT, Type.DARK, 100, 15, -1, 0, 3)
       .ignoresSubstitute()
       .edgeCase() // Incomplete implementation because of Uproar's partial implementation
@@ -9186,7 +9210,8 @@ export function initMoves() {
     new AttackMove(Moves.WEATHER_BALL, Type.NORMAL, MoveCategory.SPECIAL, 50, 100, 10, -1, 0, 3)
       .attr(WeatherBallTypeAttr)
       .attr(MovePowerMultiplierAttr, (user, target, move) => [ WeatherType.SUNNY, WeatherType.RAIN, WeatherType.SANDSTORM, WeatherType.HAIL, WeatherType.SNOW, WeatherType.FOG, WeatherType.HEAVY_RAIN, WeatherType.HARSH_SUN ].includes(globalScene.arena.weather?.weatherType!) && !globalScene.arena.weather?.isEffectSuppressed() ? 2 : 1) // TODO: is this bang correct?
-      .ballBombMove(),
+      .ballBombMove()
+      .weatherMove(),
     new StatusMove(Moves.AROMATHERAPY, Type.GRASS, -1, 5, -1, 0, 3)
       .attr(PartyStatusCureAttr, i18next.t("moveTriggers:soothingAromaWaftedThroughArea"), Abilities.SAP_SIPPER)
       .target(MoveTarget.PARTY),
@@ -10511,7 +10536,8 @@ export function initMoves() {
       .attr(FirstAttackDoublePowerAttr)
       .bitingMove(),
     new StatusMove(Moves.COURT_CHANGE, Type.NORMAL, 100, 10, -1, 0, 8)
-      .attr(SwapArenaTagsAttr, [ ArenaTagType.AURORA_VEIL, ArenaTagType.LIGHT_SCREEN, ArenaTagType.MIST, ArenaTagType.REFLECT, ArenaTagType.SPIKES, ArenaTagType.STEALTH_ROCK, ArenaTagType.STICKY_WEB, ArenaTagType.TAILWIND, ArenaTagType.TOXIC_SPIKES ]),
+      .attr(SwapArenaTagsAttr, [ ArenaTagType.AURORA_VEIL, ArenaTagType.LIGHT_SCREEN, ArenaTagType.MIST, ArenaTagType.REFLECT, ArenaTagType.SPIKES, ArenaTagType.STEALTH_ROCK, ArenaTagType.STICKY_WEB, ArenaTagType.TAILWIND, ArenaTagType.TOXIC_SPIKES ])
+      .weatherMove(),
     /* Unused */
     new AttackMove(Moves.MAX_FLARE, Type.FIRE, MoveCategory.PHYSICAL, 10, -1, 10, -1, 0, 8)
       .target(MoveTarget.NEAR_ENEMY)
@@ -10732,7 +10758,8 @@ export function initMoves() {
     new AttackMove(Moves.SPRINGTIDE_STORM, Type.FAIRY, MoveCategory.SPECIAL, 100, 80, 5, 30, 0, 8)
       .attr(StatStageChangeAttr, [ Stat.ATK ], -1)
       .windMove()
-      .target(MoveTarget.ALL_NEAR_ENEMIES),
+      .target(MoveTarget.ALL_NEAR_ENEMIES)
+      .weatherMove(),
     new AttackMove(Moves.MYSTICAL_POWER, Type.PSYCHIC, MoveCategory.SPECIAL, 70, 90, 10, 100, 0, 8)
       .attr(StatStageChangeAttr, [ Stat.SPATK ], 1, true),
     new AttackMove(Moves.RAGING_FURY, Type.FIRE, MoveCategory.PHYSICAL, 120, 100, 10, -1, 0, 8)
@@ -10781,17 +10808,20 @@ export function initMoves() {
       .attr(StormAccuracyAttr)
       .attr(StatStageChangeAttr, [ Stat.SPD ], -1)
       .windMove()
-      .target(MoveTarget.ALL_NEAR_ENEMIES),
+      .target(MoveTarget.ALL_NEAR_ENEMIES)
+      .weatherMove(),
     new AttackMove(Moves.WILDBOLT_STORM, Type.ELECTRIC, MoveCategory.SPECIAL, 100, 80, 10, 20, 0, 8)
       .attr(StormAccuracyAttr)
       .attr(StatusEffectAttr, StatusEffect.PARALYSIS)
       .windMove()
-      .target(MoveTarget.ALL_NEAR_ENEMIES),
+      .target(MoveTarget.ALL_NEAR_ENEMIES)
+      .weatherMove(),
     new AttackMove(Moves.SANDSEAR_STORM, Type.GROUND, MoveCategory.SPECIAL, 100, 80, 10, 20, 0, 8)
       .attr(StormAccuracyAttr)
       .attr(StatusEffectAttr, StatusEffect.BURN)
       .windMove()
-      .target(MoveTarget.ALL_NEAR_ENEMIES),
+      .target(MoveTarget.ALL_NEAR_ENEMIES)
+      .weatherMove(),
     new StatusMove(Moves.LUNAR_BLESSING, Type.PSYCHIC, -1, 5, -1, 0, 8)
       .attr(HealAttr, 0.25, true, false)
       .attr(HealStatusEffectAttr, false, getNonVolatileStatusEffects())
