@@ -8800,8 +8800,8 @@ export function initMoves() {
       .attr(ReducePpMoveAttr, 4),
     new AttackMove(Moves.POWDER_SNOW, Type.ICE, MoveCategory.SPECIAL, 40, 100, 25, 10, 0, 2)
       .attr(StatusEffectAttr, StatusEffect.FREEZE)
-      .target(MoveTarget.ALL_NEAR_ENEMIES)
-      .weatherMove(),
+      .weatherMove()
+      .target(MoveTarget.ALL_NEAR_ENEMIES),
     new SelfStatusMove(Moves.PROTECT, Type.NORMAL, -1, 10, -1, 4, 2)
       .attr(ProtectAttr)
       .condition(failIfLastCondition),

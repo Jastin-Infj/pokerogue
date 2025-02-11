@@ -4753,10 +4753,6 @@ export class TerrainEventTypeChangeAbAttr extends PostSummonAbAttr {
         pokemon.summonData.addedType = null;
       }
       pokemon.summonData.types = typeChange;
-      // #region Add
-      pokemon.stats = [ Stat.DEF, Stat.SPDEF ];
-      globalScene.unshiftPhase(new StatStageChangePhase(pokemon.getBattlerIndex(), false, pokemon.stats, 1));
-
       pokemon.updateInfo();
     }
     return true;
@@ -5474,8 +5470,8 @@ export function initAbilities() {
     new Ability(Abilities.FORECAST, 3)
       .attr(UncopiableAbilityAbAttr)
       .attr(NoFusionAbilityAbAttr)
+      .attr(ChangeMovePriorityAbAttr, (pokemon, move) => move.hasFlag(MoveFlags.WEATHER_MOVE), 1)
       .attr(MovePowerBoostAbAttr, (user, target, move) => move.hasFlag(MoveFlags.WEATHER_MOVE), 1.5)
-      .attr()
       .attr(PostSummonFormChangeByWeatherAbAttr, Abilities.FORECAST)
       .attr(PostWeatherChangeFormChangeAbAttr, Abilities.FORECAST, [ WeatherType.NONE, WeatherType.SANDSTORM, WeatherType.STRONG_WINDS, WeatherType.FOG ]),
     new Ability(Abilities.STICKY_HOLD, 3)
@@ -6136,7 +6132,9 @@ export function initAbilities() {
     new Ability(Abilities.POWER_SPOT, 8)
       .attr(AllyMoveCategoryPowerBoostAbAttr, [ MoveCategory.SPECIAL, MoveCategory.PHYSICAL ], 1.3),
     new Ability(Abilities.MIMICRY, 8)
-      .attr(TerrainEventTypeChangeAbAttr),
+      .attr(TerrainEventTypeChangeAbAttr)
+      .conditionalAttr(getTerrainCondition(TerrainType.ELECTRIC) || getTerrainCondition(TerrainType.GRASSY) || getTerrainCondition(TerrainType.MISTY) || getTerrainCondition(TerrainType.PSYCHIC), StatMultiplierAbAttr, Stat.DEF, 1.5)
+      .conditionalAttr(getTerrainCondition(TerrainType.ELECTRIC) || getTerrainCondition(TerrainType.GRASSY) || getTerrainCondition(TerrainType.MISTY) || getTerrainCondition(TerrainType.PSYCHIC), StatMultiplierAbAttr, Stat.SPDEF, 1.5),
     new Ability(Abilities.SCREEN_CLEANER, 8)
       .attr(PostSummonRemoveArenaTagAbAttr, [ ArenaTagType.AURORA_VEIL, ArenaTagType.LIGHT_SCREEN, ArenaTagType.REFLECT ]),
     new Ability(Abilities.STEELY_SPIRIT, 8)
